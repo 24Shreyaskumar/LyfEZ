@@ -46,10 +46,11 @@ VITE_API_URL=https://lyfez-backend.railway.app
 - Choose `24Shreyaskumar/LyfEZ`
 
 ### 2.2 Configure Railway Project
-- Click "Add Service" → "GitHub repo"
-- Root directory: `backend`
-- Build command: `npm install && npx prisma generate`
-- Start command: `npm start`
+In Railway dashboard:
+- Click the project
+- Go to Settings
+- Set **Root Directory** to `backend`
+- Build command will auto-detect from `backend/railway.toml`
 
 ### 2.3 Environment Variables (in Railway dashboard)
 Add under "Variables":
