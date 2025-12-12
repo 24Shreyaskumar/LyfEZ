@@ -69,7 +69,7 @@ export default function PendingReviews() {
     setApproving(true)
 
     try {
-      await API.post(`/reviews/${selectedSubmission.id}/reviews`, {
+      await API.post(`/api/reviews/${selectedSubmission.id}/reviews`, {
         approved: true,
         comment: reviewComment
       })
@@ -88,7 +88,7 @@ export default function PendingReviews() {
     setApproving(true)
 
     try {
-      await API.post(`/reviews/${selectedSubmission.id}/reviews`, {
+      await API.post(`/api/reviews/${selectedSubmission.id}/reviews`, {
         approved: false,
         comment: reviewComment
       })

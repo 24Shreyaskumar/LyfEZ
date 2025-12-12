@@ -76,7 +76,7 @@ export default function GroupDetail() {
   const fetchGroupDetails = async () => {
     try {
       setLoading(true)
-      const res = await API.get(`/groups/${id}`)
+      const res = await API.get(`/api/groups/${id}`)
       setGroup(res.data)
 
       const user = JSON.parse(localStorage.getItem('user') || '{}')
@@ -107,7 +107,7 @@ export default function GroupDetail() {
 
   const fetchPendingReviews = async () => {
     try {
-      const res = await API.get('/reviews/user/pending')
+      const res = await API.get('/api/reviews/user/pending')
       // Filter to only show reviews for the current group
       const groupPendingReviews = res.data.filter(
         submission => submission.activity.group.id === parseInt(id)
@@ -124,14 +124,14 @@ export default function GroupDetail() {
 
   const fetchActivitiesWithUser = async (user) => {
     try {
-      const res = await API.get(`/activities/${id}/activities`)
+      const res = await API.get(`/api/activities/${id}/activities`)
       setActivities(res.data)
       
       // Fetch user's submissions for each activity
       const userSubmissionMap = {}
       for (const activity of res.data) {
         try {
-          const subRes = await API.get(`/submissions/${activity.id}/user/${user.id}`)
+          const subRes = await API.get(`/api/submissions/${activity.id}/user/${user.id}`)
           if (subRes.data) {
             userSubmissionMap[activity.id] = subRes.data
             console.log(`[GroupDetail] Activity ${activity.id} submission:`, subRes.data.status)
@@ -155,7 +155,7 @@ export default function GroupDetail() {
     setAdding(true)
 
     try {
-      await API.post(`/groups/${id}/members`, { email: memberEmail })
+      await API.post(`/api/groups/${id}/members`, { email: memberEmail })
       setMemberEmail('')
       setShowAddMember(false)
       fetchGroupDetails()
@@ -172,7 +172,7 @@ export default function GroupDetail() {
     setAdding(true)
 
     try {
-      await API.post(`/activities/${id}/activities`, {
+      await API.post(`/api/activities/${id}/activities`, {
         title: activityTitle,
         description: activityDesc,
         points: parseInt(activityPoints) || 0
@@ -191,7 +191,7 @@ export default function GroupDetail() {
 
   const handleReview = async (submissionId, approved) => {
     try {
-      await API.post(`/reviews/${submissionId}/reviews`, {
+      await API.post(`/api/reviews/${submissionId}/reviews`, {
         approved,
         comment: approved ? 'Approved' : 'Rejected'
       })
@@ -218,7 +218,7 @@ export default function GroupDetail() {
     setError('')
 
     try {
-      await API.put(`/activities/${editingActivity}`, {
+      await API.put(`/api/activities/${editingActivity}`, {
         title: editTitle,
         description: editDesc,
         points: editPoints
@@ -234,7 +234,7 @@ export default function GroupDetail() {
     if (!window.confirm('Are you sure you want to delete this activity?')) return
 
     try {
-      await API.delete(`/activities/${activityId}`)
+      await API.delete(`/api/activities/${activityId}`)
       fetchActivities()
     } catch (err) {
       setError(err.response?.data?.error || 'Failed to delete activity')
@@ -245,7 +245,7 @@ export default function GroupDetail() {
     if (!window.confirm('Are you sure you want to remove this member?')) return
 
     try {
-      await API.delete(`/groups/${id}/members/${memberId}`)
+      await API.delete(`/api/groups/${id}/members/${memberId}`)
       fetchGroupDetails()
     } catch (err) {
       setError(err.response?.data?.error || 'Failed to remove member')
@@ -255,7 +255,7 @@ export default function GroupDetail() {
   const handleUpdateMemberPoints = async (e) => {
     e.preventDefault()
     try {
-      await API.put(`/groups/${id}/members/${editingMemberId}/points`, {
+      await API.put(`/api/groups/${id}/members/${editingMemberId}/points`, {
         points: editingMemberPoints
       })
       setEditingMemberId(null)
@@ -298,7 +298,7 @@ export default function GroupDetail() {
         })
       )
       
-      const response = await API.post(`/submissions/${selectedActivity.id}/submissions`, {
+      const response = await API.post(`/api/submissions/${selectedActivity.id}/submissions`, {
         description: submissionDesc,
         proofImages: proofImageData.length > 0 ? proofImageData : null,
         taggedUsers: []
