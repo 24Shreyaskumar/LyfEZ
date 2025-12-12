@@ -16,7 +16,7 @@ export default function Calendar({ groupId }) {
       setLoading(true)
       const year = currentDate.getFullYear()
       const month = currentDate.getMonth() + 1
-      const response = await API.get(`/calendar/groups/${groupId}/daily-status`, {
+      const response = await API.get(`/api/calendar/groups/${groupId}/daily-status`, {
         params: { year, month }
       })
       setDailyStatus(response.data.dailyStatus || {})

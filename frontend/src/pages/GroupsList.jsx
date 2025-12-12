@@ -28,7 +28,7 @@ export default function GroupsList() {
   const fetchGroups = async () => {
     try {
       setLoading(true)
-      const res = await API.get('/groups')
+      const res = await API.get('/api/groups')
       setGroups(res.data)
     } catch (err) {
       setError(err.response?.data?.error || 'Failed to load groups')
@@ -43,7 +43,7 @@ export default function GroupsList() {
     setCreating(true)
 
     try {
-      await API.post('/groups', { name: groupName })
+      await API.post('/api/groups', { name: groupName })
       setGroupName('')
       setShowModal(false)
       fetchGroups()
