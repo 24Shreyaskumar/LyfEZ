@@ -50,7 +50,7 @@ In Railway dashboard:
 - Click the project
 - Go to Settings
 - Set **Root Directory** to `backend`
-- Build command will auto-detect from `backend/railway.toml`
+- Railway will pick up `backend/Dockerfile` automatically (no extra commands needed)
 
 ### 2.3 Environment Variables (in Railway dashboard)
 Add under "Variables":
@@ -62,7 +62,7 @@ PORT=4000
 ```
 
 ### 2.4 Deploy
-- Railway auto-deploys from GitHub
+- Railway auto-deploys from GitHub using the Dockerfile
 - Wait for build to complete
 - Your backend URL will be something like: `https://lyfez-backend.railway.app`
 
