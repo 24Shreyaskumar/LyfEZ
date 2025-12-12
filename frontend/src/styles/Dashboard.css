@@ -1,0 +1,128 @@
+.dashboard {
+  min-height: 100vh;
+  background: #f5f5f5;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+}
+
+.dashboard-header {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  padding: 1.5rem 2rem;
+  box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  color: white;
+}
+
+.dashboard-header h1 {
+  margin: 0;
+  color: white;
+  font-size: 1.8rem;
+}
+
+.user-section {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+  color: white;
+  font-weight: 500;
+}
+
+.user-section button {
+  padding: 0.6rem 1.2rem;
+  background: rgba(255, 255, 255, 0.2);
+  color: white;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  border-radius: 4px;
+  cursor: pointer;
+  font-weight: 600;
+  transition: all 0.3s;
+}
+
+.user-section button:hover {
+  background: rgba(255, 255, 255, 0.3);
+  border-color: rgba(255, 255, 255, 0.5);
+}
+
+.dashboard-content {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 2rem 1rem;
+}
+
+.dashboard-content h2 {
+  color: #333;
+  margin-bottom: 2rem;
+}
+
+.dashboard-content p {
+  color: #666;
+}
+
+.quick-actions {
+  background: white;
+  padding: 1.5rem;
+  border-radius: 8px;
+  margin-top: 2rem;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+}
+
+.quick-actions h3 {
+  color: #333;
+  margin-bottom: 1rem;
+}
+
+.quick-actions button {
+  padding: 0.75rem 1.5rem;
+  margin-right: 1rem;
+  margin-bottom: 1rem;
+  background: #667eea;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-weight: 600;
+}
+
+.quick-actions button:hover {
+  background: #5568d3;
+}
+
+/* Dark mode */
+[data-theme='dark'] .dashboard {
+  background: #0b1021;
+}
+
+[data-theme='dark'] .dashboard-header {
+  background: linear-gradient(135deg, #0f172a 0%, #1f2937 100%);
+}
+
+[data-theme='dark'] .dashboard-content h2,
+[data-theme='dark'] .dashboard-content h3 {
+  color: #e5e7eb;
+}
+
+[data-theme='dark'] .dashboard-content p {
+  color: #9ca3af;
+}
+
+[data-theme='dark'] .quick-actions {
+  background: #0f172a !important;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.35);
+  border: none;
+}
+
+[data-theme='dark'] .quick-actions h3 {
+  color: #fff;
+  margin-bottom: 1rem;
+}
+
+[data-theme='dark'] .quick-actions button {
+  background: #7c7ce0;
+  color: white;
+}
+
+[data-theme='dark'] .quick-actions button:hover {
+  background: #9f9ff0;
+}
+

@@ -1,0 +1,86 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id          Int                  @id @default(autoincrement())
+  email       String               @unique
+  name        String?
+  password    String
+  points      Int                  @default(0)
+  memberships Membership[]
+  submissions ActivitySubmission[]
+  reviews     Review[]
+  createdAt   DateTime             @default(now())
+}
+
+model Group {
+  id          Int          @id @default(autoincrement())
+  name        String
+  memberships Membership[]
+  activities  Activity[]
+  createdAt   DateTime     @default(now())
+}
+
+model Membership {
+  id      Int   @id @default(autoincrement())
+  user    User  @relation(fields: [userId], references: [id])
+  userId  Int
+  group   Group @relation(fields: [groupId], references: [id])
+  groupId Int
+  role    Role  @default(MEMBER)
+}
+
+enum Role {
+  ADMIN
+  MEMBER
+}
+
+model Activity {
+  id          Int                  @id @default(autoincrement())
+  title       String
+  description String?
+  points      Int                  @default(0)
+  group       Group                @relation(fields: [groupId], references: [id])
+  groupId     Int
+  submissions ActivitySubmission[]
+  createdAt   DateTime             @default(now())
+}
+
+model ActivitySubmission {
+  id             Int              @id @default(autoincrement())
+  activity       Activity         @relation(fields: [activityId], references: [id], onDelete: Cascade)
+  activityId     Int
+  user           User             @relation(fields: [userId], references: [id])
+  userId         Int
+  description    String?
+  proofImages    String?
+  taggedUsers    String?
+  status         SubmissionStatus @default(PENDING)
+  reviews        Review[]
+  submissionDate String? // Date in YYYY-MM-DD format
+  createdAt      DateTime         @default(now())
+}
+
+enum SubmissionStatus {
+  PENDING
+  UNDER_REVIEW
+  APPROVED
+  REJECTED
+}
+
+model Review {
+  id           Int                @id @default(autoincrement())
+  submission   ActivitySubmission @relation(fields: [submissionId], references: [id], onDelete: Cascade)
+  submissionId Int
+  reviewer     User               @relation(fields: [reviewerId], references: [id])
+  reviewerId   Int
+  approved     Boolean
+  comment      String?
+  createdAt    DateTime           @default(now())
+}
