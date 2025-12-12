@@ -49,8 +49,9 @@ VITE_API_URL=https://lyfez-backend.railway.app
 In Railway dashboard:
 - Click the project
 - Go to Settings
-- Set **Root Directory** to repository root (leave blank) so Railway uses the root `Dockerfile`
-- Railway will build using the root `Dockerfile` (which runs the backend)
+- Set **Root Directory** to repository root (leave blank)
+- Set **Builder** to Dockerfile (not Nixpacks)
+- Railway will build using the root `Dockerfile`
 
 ### 2.3 Environment Variables (in Railway dashboard)
 Add under "Variables":
