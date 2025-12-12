@@ -1,0 +1,9 @@
+node_modules
+npm-debug.log
+frontend
+docs
+.git
+.github
+.DS_Store
+.env
+.env.local
