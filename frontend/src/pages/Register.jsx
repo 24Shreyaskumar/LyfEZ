@@ -23,7 +23,7 @@ export default function Register() {
 
     setLoading(true)
     try {
-      const res = await API.post('/auth/register', { email, name, password })
+      const res = await API.post('/api/auth/register', { email, name, password })
       localStorage.setItem('token', res.data.token)
       localStorage.setItem('user', JSON.stringify(res.data.user))
       navigate('/dashboard')
