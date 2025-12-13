@@ -11,7 +11,8 @@ app.use(express.urlencoded({ limit: '50mb', extended: true }));
 const allowedOrigins = [
 	'https://lyf-ez.vercel.app',
 	'https://lyf-dyrauzmae-shreyaskumars-projects.vercel.app',
-	'http://localhost:3001'
+	'http://localhost:3001',
+	'http://localhost:3000'
 ];
 
 app.use(cors({
