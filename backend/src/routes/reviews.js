@@ -138,6 +138,10 @@ router.post('/:submissionId/reviews', authMiddleware, async (req, res) => {
     const approvalCount = allReviews.filter(r => r.approved).length;
     const rejectionCount = allReviews.filter(r => !r.approved).length;
 
+    // Majority rule: need ceil(total_members / 2)
+    const required = Math.ceil(groupMemberCount / 2);
+    console.log(`[REVIEW] Required approvals/rejections for decision: ${required}`);
+
     console.log(`\n[REVIEW] Review created for submission ${submissionId}`);
     console.log(`[REVIEW] All reviews in DB:`, allReviews.map(r => ({ id: r.id, submissionId: r.submissionId, approved: r.approved, reviewerId: r.reviewerId })));
     console.log(`[REVIEW] Group members: ${groupMemberCount}`);
@@ -147,18 +151,17 @@ router.post('/:submissionId/reviews', authMiddleware, async (req, res) => {
     let newStatus = submission.status; // Keep current status by default
     let shouldAwardPoints = false;
 
-    // Logic: approvals >= rejections → APPROVED, rejections > approvals → REJECTED
-    if (rejectionCount > approvalCount) {
-      newStatus = 'REJECTED';
-      console.log(`[REVIEW] ✗ REJECTIONS > APPROVALS! Updating submission ${submissionId} to REJECTED`);
-    } else if (approvalCount >= rejectionCount && (approvalCount > 0 || rejectionCount > 0)) {
+    // Majority-based decision
+    if (approvalCount >= required) {
       newStatus = 'APPROVED';
       shouldAwardPoints = true;
-      console.log(`[REVIEW] ✓ APPROVALS >= REJECTIONS! Updating submission ${submissionId} to APPROVED`);
+      console.log(`[REVIEW] ✓ APPROVALS >= REQUIRED (${approvalCount}/${required}) → APPROVED`);
+    } else if (rejectionCount >= required) {
+      newStatus = 'REJECTED';
+      console.log(`[REVIEW] ✗ REJECTIONS >= REQUIRED (${rejectionCount}/${required}) → REJECTED`);
     } else {
-      // No reviews yet or equal with no reviews
       newStatus = 'UNDER_REVIEW';
-      console.log(`[REVIEW] No change needed - status remains ${submission.status}`);
+      console.log(`[REVIEW] Pending more reviews (${approvalCount} approvals, ${rejectionCount} rejections, required ${required})`);
     }
 
     // Update status if changed

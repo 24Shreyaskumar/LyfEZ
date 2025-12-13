@@ -71,11 +71,13 @@ router.post('/:activityId/submissions', authMiddleware, async (req, res) => {
       return res.status(403).json({ error: 'Not a member of this group' });
     }
 
-    // Check for existing submission
+    // Check for existing submission for TODAY only (daily reset)
+    const todayStr = new Date().toISOString().split('T')[0];
     const existingSubmission = await prisma.activitySubmission.findFirst({
       where: {
         activityId,
-        userId: req.userId
+        userId: req.userId,
+        submissionDate: todayStr
       }
     });
 
@@ -84,7 +86,7 @@ router.post('/:activityId/submissions', authMiddleware, async (req, res) => {
       return res.status(400).json({ error: 'You have already submitted this activity' });
     }
 
-    // If there's a rejected/pending submission, delete it and allow new submission
+    // If there's a rejected/pending submission for TODAY, delete it and allow new submission
     if (existingSubmission) {
       await prisma.activitySubmission.delete({
         where: { id: existingSubmission.id }
