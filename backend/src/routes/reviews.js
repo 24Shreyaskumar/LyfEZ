@@ -169,22 +169,34 @@ router.post('/:submissionId/reviews', authMiddleware, async (req, res) => {
       const updated = await prisma.activitySubmission.update({
         where: { id: submissionId },
         data: { status: newStatus },
-        include: { activity: true, user: true }
+        include: { activity: { include: { group: true } }, user: true }
       });
       console.log(`[REVIEW] ✓ Submission status updated from ${submission.status} to ${updated.status}`);
 
-      // Award points only if approved AND status was just changed to approved
+      // Award points to membership (not user) only if approved AND status was just changed to approved
       if (shouldAwardPoints && submission.status !== 'APPROVED') {
-        const updatedUser = await prisma.user.update({
-          where: { id: submission.userId },
-          data: {
-            points: {
-              increment: submission.activity.points
-            }
-          },
-          select: { id: true, points: true }
+        // Find the membership for this user in this group
+        const membership = await prisma.membership.findFirst({
+          where: {
+            userId: submission.userId,
+            groupId: updated.activity.groupId
+          }
         });
-        console.log(`[REVIEW] ✓ Points awarded to user ${submission.userId}: new total = ${updatedUser.points}`);
+
+        if (membership) {
+          const updatedMembership = await prisma.membership.update({
+            where: { id: membership.id },
+            data: {
+              points: {
+                increment: submission.activity.points
+              }
+            },
+            select: { id: true, points: true, userId: true }
+          });
+          console.log(`[REVIEW] ✓ Points awarded to membership ${membership.id} for user ${submission.userId}: new total = ${updatedMembership.points}`);
+        } else {
+          console.log(`[REVIEW] ! Membership not found for user ${submission.userId} in group ${updated.activity.groupId}`);
+        }
       } else if (shouldAwardPoints && submission.status === 'APPROVED') {
         console.log(`[REVIEW] ! Points NOT awarded - submission was already APPROVED`);
       }

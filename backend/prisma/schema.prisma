@@ -34,6 +34,7 @@ model Membership {
   group   Group @relation(fields: [groupId], references: [id])
   groupId Int
   role    Role  @default(MEMBER)
+  points  Int   @default(0)
 }
 
 enum Role {

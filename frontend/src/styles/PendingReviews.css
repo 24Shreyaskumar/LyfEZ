@@ -540,8 +540,8 @@ html[data-theme='dark'] .empty-state p {
 }
 
 .modal {
-  background: var(--card, white);
-  color: var(--text, #1f2937);
+  background: #111827;
+  color: #e5e7eb;
   border-radius: 12px;
   padding: 2rem;
   max-width: 550px;
@@ -551,14 +551,14 @@ html[data-theme='dark'] .empty-state p {
 
 .modal h2 {
   margin: 0 0 1.5rem 0;
-  color: var(--text, #1f2937);
+  color: #f3f4f6;
   font-size: 1.5rem;
   font-weight: 700;
 }
 
 .review-details {
-  background: var(--bg, #f9fafb);
-  border: 1px solid var(--border, #e5e7eb);
+  background: #0f172a;
+  border: 1px solid #1f2937;
   border-radius: 8px;
   padding: 1.25rem;
   margin-bottom: 1.5rem;
@@ -566,19 +566,19 @@ html[data-theme='dark'] .empty-state p {
 
 .review-details p {
   margin: 0.5rem 0;
-  color: var(--text, #374151);
+  color: #d1d5db;
   font-size: 0.95rem;
   line-height: 1.6;
 }
 
 .review-details strong {
-  color: var(--text, #1f2937);
+  color: #f3f4f6;
   font-weight: 600;
 }
 
 .submission-desc {
-  background: var(--bg, white) !important;
-  border: 1px solid var(--border, #e5e7eb);
+  background: #0f172a !important;
+  border: 1px solid #1f2937;
   padding: 0.75rem;
   border-radius: 4px;
   margin-top: 0.5rem;
@@ -586,7 +586,7 @@ html[data-theme='dark'] .empty-state p {
   word-break: break-word;
   font-family: 'Courier New', monospace;
   font-size: 0.85rem;
-  color: var(--text, #555);
+  color: #d1d5db;
   max-height: 150px;
   overflow-y: auto;
 }
@@ -600,24 +600,24 @@ html[data-theme='dark'] .empty-state p {
 .modal textarea {
   width: 100%;
   padding: 0.75rem;
-  border: 1px solid var(--border, #e5e7eb);
+  border: 1px solid #1f2937;
   border-radius: 6px;
   font-family: inherit;
   font-size: 0.95rem;
-  color: var(--text, #1f2937);
-  background: var(--bg, #fafafa);
+  color: #e5e7eb;
+  background: #0f172a;
   resize: vertical;
   min-height: 80px;
 }
 
 .modal textarea::placeholder {
-  color: #9ca3af;
+  color: #6b7280;
 }
 
 .modal textarea:focus {
   outline: none;
-  border-color: #667eea;
-  background: white;
+  border-color: #7c7ce0;
+  background: #111827;
 }
 
 .modal-actions {
@@ -638,69 +638,10 @@ html[data-theme='dark'] .empty-state p {
 }
 
 .modal-actions button:not(.btn-approve):not(.btn-reject) {
-  background: #e5e7eb;
-  color: #374151;
+  background: #1f2937;
+  color: #e5e7eb;
 }
 
 .modal-actions button:not(.btn-approve):not(.btn-reject):hover {
-  background: #d1d5db;
-}
-
-/* Dark mode modal */
-[data-theme='dark'] .modal-overlay {
-  background: rgba(0, 0, 0, 0.7);
-}
-
-[data-theme='dark'] .modal {
-  background: var(--card);
-  color: var(--text);
-}
-
-[data-theme='dark'] .modal h2 {
-  color: var(--text);
-}
-
-[data-theme='dark'] .review-details {
-  background: var(--bg);
-  border-color: var(--border);
-  color: var(--text);
-}
-
-[data-theme='dark'] .review-details p {
-  color: var(--text);
-}
-
-[data-theme='dark'] .review-details strong {
-  color: var(--text);
-}
-
-[data-theme='dark'] .submission-desc {
-  background: var(--bg) !important;
-  border-color: var(--border) !important;
-  color: var(--text) !important;
-}
-
-[data-theme='dark'] .modal textarea {
-  background: var(--bg);
-  border-color: var(--border);
-  color: var(--text);
-}
-
-[data-theme='dark'] .modal textarea::placeholder {
-  color: var(--muted);
-}
-
-[data-theme='dark'] .modal textarea:focus {
-  border-color: var(--accent);
-  background: var(--card);
-}
-
-[data-theme='dark'] .modal-actions button:not(.btn-approve):not(.btn-reject) {
-  background: var(--border);
-  color: var(--text);
-}
-
-[data-theme='dark'] .modal-actions button:not(.btn-approve):not(.btn-reject):hover {
-  background: var(--accent);
-  color: white;
+  background: #374151;
 }

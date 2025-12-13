@@ -190,7 +190,7 @@ router.delete('/:id', authMiddleware, async (req, res) => {
       return res.status(403).json({ error: 'Only admins can delete activities' });
     }
 
-    // Find all approved submissions for this activity to remove points
+    // Find all approved submissions for this activity to remove points from memberships
     const approvedSubmissions = await prisma.activitySubmission.findMany({
       where: {
         activityId,
@@ -199,16 +199,25 @@ router.delete('/:id', authMiddleware, async (req, res) => {
       select: { userId: true }
     });
 
-    // Remove points from all users who had approved submissions
+    // Remove points from memberships (not users) who had approved submissions
     for (const submission of approvedSubmissions) {
-      await prisma.user.update({
-        where: { id: submission.userId },
-        data: {
-          points: {
-            decrement: activity.points
-          }
+      const membership = await prisma.membership.findFirst({
+        where: {
+          userId: submission.userId,
+          groupId: activity.groupId
         }
       });
+
+      if (membership) {
+        await prisma.membership.update({
+          where: { id: membership.id },
+          data: {
+            points: {
+              decrement: activity.points
+            }
+          }
+        });
+      }
     }
 
     // Delete the activity - cascade delete will handle submissions and reviews

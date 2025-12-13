@@ -46,12 +46,24 @@ router.get('/', authMiddleware, async (req, res) => {
       },
       include: {
         memberships: {
-          include: { user: { select: { id: true, email: true, name: true, points: true } } }
+          include: { user: { select: { id: true, email: true, name: true } } }
         }
       }
     });
 
-    res.json(groups);
+    // Map response to include membership points
+    const groupsWithPoints = groups.map(group => ({
+      ...group,
+      memberships: group.memberships.map(m => ({
+        ...m,
+        user: {
+          ...m.user,
+          points: m.points // Use membership points instead of user points
+        }
+      }))
+    }));
+
+    res.json(groupsWithPoints);
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
@@ -64,7 +76,7 @@ router.get('/:id', authMiddleware, async (req, res) => {
       where: { id: parseInt(req.params.id) },
       include: {
         memberships: {
-          include: { user: { select: { id: true, email: true, name: true, points: true } } }
+          include: { user: { select: { id: true, email: true, name: true } } }
         },
         activities: true
       }
@@ -80,7 +92,19 @@ router.get('/:id', authMiddleware, async (req, res) => {
       return res.status(403).json({ error: 'Not a member of this group' });
     }
 
-    res.json(group);
+    // Map response to include membership points
+    const groupWithPoints = {
+      ...group,
+      memberships: group.memberships.map(m => ({
+        ...m,
+        user: {
+          ...m.user,
+          points: m.points // Use membership points instead of user points
+        }
+      }))
+    };
+
+    res.json(groupWithPoints);
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
@@ -259,13 +283,14 @@ router.put('/:groupId/members/:userId/points', authMiddleware, async (req, res) 
       return res.status(404).json({ error: 'Member not found in this group' });
     }
 
-    // Update user points
-    const updatedUser = await prisma.user.update({
-      where: { id: userIdNum },
-      data: { points: parseInt(points) }
+    // Update membership points (not user points)
+    const updatedMembership = await prisma.membership.update({
+      where: { id: membership.id },
+      data: { points: parseInt(points) },
+      include: { user: { select: { id: true, email: true, name: true } } }
     });
 
-    res.json({ message: 'Points updated', user: updatedUser });
+    res.json({ message: 'Points updated', membership: updatedMembership });
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
